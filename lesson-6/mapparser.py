@@ -12,17 +12,15 @@ Note that your code will be tested with a different data file than the 'example.
 """
 import xml.etree.cElementTree as ET
 import pprint
+from collections import defaultdict
 
 def count_tags(filename):
     # read osm into xml without loading the entire file
-    xml_tree = ET
+    xml_tree = ET.iterparse(filename)
 
-    tag_dict = {}
-    for tag in xml_tree:
-        if tag in tag_dict:
-            tag_dict[tag] = 1
-        else:
-            tag_dict[tag] += 1
+    tag_dict = defaultdict(int)
+    for (_, elem) in xml_tree:
+        tag_dict[elem.tag] += 1
     return tag_dict
 
 def test():

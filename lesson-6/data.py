@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import xml.etree.cElementTree as ET
-import pprint
+from pprint import pprint
 import re
 import codecs
 import json
+from collections import defaultdict
 """
 Your task is to wrangle the data and transform the shape of the data
 into the model we mentioned earlier. The output should be a list of dictionaries
@@ -12,7 +13,7 @@ that look like this:
 
 {
 "id": "2406124091",
-"type: "node",
+"type": "node",
 "visible":"true",
 "created": {
           "version":"2",
@@ -91,17 +92,44 @@ lower_colon = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
 problemchars = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
 
 CREATED = [ "version", "changeset", "timestamp", "user", "uid"]
+Def_Dict = defaultdict(dict)
+
 
 
 def shape_element(element):
-    node = {}
-    if element.tag == "node" or element.tag == "way" :
-        # YOUR CODE HERE
-
-        return node
+    node = Def_Dict.copy()
+    if element.tag == "node":
+        node['type'] = 'node'
+        pos = [float(element.attrib.get('lat')), float(element.attrib.get('lon'))]
+        node['pos'] = pos
+    elif element.tag == "way":
+        node['type'] = 'way'
     else:
-        return None
+        return {}
 
+    for key, val in element.attrib.items():
+        if key not in ["lat", "lon"]:
+            if key in ["changeset", "user", "version", "uid", "timestamp"]:
+                node['created'][key] = val
+            else:
+                node[key] = val
+
+    node_refs = []
+    for sub_elem in element.iter():
+        if sub_elem.tag == 'tag':
+            if not problemchars.search(sub_elem.attrib['k']):
+                if sub_elem.attrib['k'][0:5]== 'addr:':
+                    if ':' not in sub_elem.attrib['k'][5:]:
+                        node['address'][sub_elem.attrib['k'][5:]] = sub_elem.attrib['v']
+                else:
+                    node[sub_elem.attrib['k']] = sub_elem.attrib['v']
+        elif sub_elem.tag == 'nd':
+            node_refs.append(sub_elem.attrib['ref'])
+    if node_refs:
+        node['node_refs'] = node_refs
+
+    node = dict(node)
+    return node
 
 def process_map(file_in, pretty = False):
     # You do not need to change this file
@@ -113,7 +141,7 @@ def process_map(file_in, pretty = False):
             if el:
                 data.append(el)
                 if pretty:
-                    fo.write(json.dumps(el, indent=2)+"\n")
+                    fo.write(json.dumps(el, indent=4)+"\n")
                 else:
                     fo.write(json.dumps(el) + "\n")
     return data
@@ -123,7 +151,7 @@ def test():
     # call the process_map procedure with pretty=False. The pretty=True option adds
     # additional spaces to the output, making it significantly larger.
     data = process_map('example.osm', True)
-    #pprint.pprint(data)
+    pprint(data)
 
     correct_first_elem = {
         "id": "261114295",
