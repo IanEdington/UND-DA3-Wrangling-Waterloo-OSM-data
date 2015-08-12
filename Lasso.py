@@ -12,6 +12,7 @@ from pprint import pprint
 
 # Commonly used Regex
 RE_LAST_WORD = re.compile(r'\b\S+\.?$', re.IGNORECASE)
+RE_SECOND_LAST_WORD = re.compile(r'\b\S+\.?$', re.IGNORECASE)
 RE_LOWER = re.compile(r'^([a-z]|_)*$')
 RE_LOWER_COLON = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
 RE_PROBLEM_CHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
@@ -72,33 +73,7 @@ def check_keys_list(dict_key_list):
             problem_keys.append(key)
     return problem_keys
 
-
-#########################
-### Auditing the data ###
-#########################
-
-def audit_count_tags(filename):
-    # read osm into xml without loading the entire file
-    xml_tree = ET.iterparse(filename)
-
-    tag_dict = defaultdict(int)
-    for (_, elem) in xml_tree:
-        tag_dict[elem.tag] += 1
-    return tag_dict
-
-def audit_key_type(element, keys):
-    if element.tag == "tag":
-        if RE_LOWER.search(element.attrib['k']):
-            keys['lower'] +=1
-        elif RE_LOWER_COLON.search(element.attrib['k']):
-            keys['lower_colon'] +=1
-        elif RE_PROBLEM_CHARS.search(element.attrib['k']):
-            keys['problemchars'] +=1
-        else:
-            keys['other'] +=1
-    return keys
-
-def audit_street_type(street_types, street_name):
+def audit_street_type(street_types, street_name, regex = RE_LAST_WORD):
     '''
     get:
         street_types = defaultdict(set)
@@ -106,24 +81,23 @@ def audit_street_type(street_types, street_name):
     return:
         street_types dict with {'last word of street_name': street_name}
     '''
-    m = RE_LAST_WORD.search(street_name)
+    m = regex.search(street_name)
     if m:
         street_type = m.group()
-        if street_type not in EXPECTED_STREET_NAMES:
-            street_types[street_type].add(street_name)
+        street_types[street_type].add(street_name)
 
-def process_audit_street_type(osmfile):
+def process_audit_address_type(osmfile, addr_v = "addr:street", regex = RE_LAST_WORD):
     osm_file = open(osmfile, "r")
     street_types = defaultdict(set)
     for _, elem in ET.iterparse(osm_file, events=("start",)):
-
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if (tag.attrib['k'] == "addr:street"):
-                    audit_street_type(street_types, tag.attrib['v'])
-
+        if elem.tag == "tag":
+            if (elem.attrib['k'] == addr_v):
+                audit_street_type(street_types, elem.attrib['v'], regex)
     return street_types
 
+#########################
+###  ###
+#########################
 
 def update_name(name, mapping):
     m = RE_LAST_WORD.search(name)
@@ -132,7 +106,7 @@ def update_name(name, mapping):
     return better_name
 
 def process_update_name():
-    st_types = process_audit_street_type('example.osm')
+    st_types = process_audit_address_type('example.osm')
     pprint(dict(st_types))
 
     for _, ways in st_types.items():
