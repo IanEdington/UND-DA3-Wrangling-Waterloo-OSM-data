@@ -28,9 +28,9 @@ STREET_NAME_MAPPING = { "St": "Street",
 CREATED = [ "version", "changeset", "timestamp", "user", "uid"]
 
 
-##############################
-### Understanding the data ###
-##############################
+#########################
+### Auditing the data ###
+#########################
 
 def dictify_element_and_children(element, atr_d=S_D(), st_atr_d=S_DD(), s_st_d=S_D(), tag_k_v_dict=S_D()):
     '''
@@ -45,9 +45,11 @@ def dictify_element_and_children(element, atr_d=S_D(), st_atr_d=S_DD(), s_st_d=S
     for key, val in element.attrib.items():
         atr_d[element.tag][key].add(val)
     for sub_tag in element.iter():
+        child_set = {el.tag for el in list(sub_tag)}
+        if child_set != set():
+            s_st_d[element.tag][sub_tag.tag].update(child_set)
         for key, val in sub_tag.attrib.items():
             st_atr_d[element.tag][sub_tag.tag][key].add(val)
-        s_st_d[element.tag][sub_tag.tag].add(tuple(sub_tag.getchildren())) # hopefully none (nested only one deep)
         if sub_tag.tag == 'tag':
             tag_k_v_dict[element.tag][sub_tag.attrib['k']].add(sub_tag.attrib['v'])
 
@@ -70,7 +72,10 @@ def check_keys_list(dict_key_list):
             problem_keys.append(key)
     return problem_keys
 
-###
+
+#########################
+### Auditing the data ###
+#########################
 
 def audit_count_tags(filename):
     # read osm into xml without loading the entire file
