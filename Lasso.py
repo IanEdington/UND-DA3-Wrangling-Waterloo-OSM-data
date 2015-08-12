@@ -82,9 +82,13 @@ def audit_street_type(street_types, street_name, regex = RE_LAST_WORD):
         street_types dict with {'last word of street_name': street_name}
     '''
     m = regex.search(street_name)
+    street_directions = ['N', 'North', 'E', 'East', 'South', 'West', 'W',]
     if m:
         street_type = m.group()
-        street_types[street_type].add(street_name)
+        if street_type in street_directions:
+            street_types[street_name.split()[-2]].add(street_name)
+        else:
+            street_types[street_type].add(street_name)
 
 def process_audit_address_type(osmfile, addr_v = "addr:street", regex = RE_LAST_WORD):
     osm_file = open(osmfile, "r")
