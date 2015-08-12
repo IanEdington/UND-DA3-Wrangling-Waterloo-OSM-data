@@ -17,8 +17,8 @@ RE_LOWER_COLON = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
 RE_PROBLEM_CHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
 
 # Default Dicts used in audit functions
-S_D = defaultdict(set)
-S_DD = defaultdict(lambda : defaultdict(int))
+def S_D(): return defaultdict(lambda : defaultdict(set))
+def S_DD(): return defaultdict(lambda : defaultdict(lambda : defaultdict(set)))
 
 #
 EXPECTED_STREET_NAMES = []
@@ -28,7 +28,11 @@ STREET_NAME_MAPPING = { "St": "Street",
 CREATED = [ "version", "changeset", "timestamp", "user", "uid"]
 
 
-def audit_tags_2_deep(element, atr_d=S_D, st_atr_d=S_DD, s_st_d=S_D, tag_k_v_dict=S_D):
+##############################
+### Understanding the data ###
+##############################
+
+def dictify_element_and_children(element, atr_d=S_D(), st_atr_d=S_DD(), s_st_d=S_D(), tag_k_v_dict=S_D()):
     '''
     take a start xml tag
 
@@ -39,15 +43,34 @@ def audit_tags_2_deep(element, atr_d=S_D, st_atr_d=S_DD, s_st_d=S_D, tag_k_v_dic
         4 - tag_k_v_dict: for tag sub_tag:
     '''
     for key, val in element.attrib.items():
-        atr_d[key].add(val)
-    for _, sub_tag in element.iter():
+        atr_d[element.tag][key].add(val)
+    for sub_tag in element.iter():
         for key, val in sub_tag.attrib.items():
-            st_atr_d[sub_tag.tag][key].add(val)
-        s_st_d[sub_tag.tag].add(sub_tag.getchildren()) # hopefully none (nested only one deep)
+            st_atr_d[element.tag][sub_tag.tag][key].add(val)
+        s_st_d[element.tag][sub_tag.tag].add(tuple(sub_tag.getchildren())) # hopefully none (nested only one deep)
         if sub_tag.tag == 'tag':
-            tag_k_v_dict[sub_tag.attrib['k']].add(sub_tag.attrib['v'])
+            tag_k_v_dict[element.tag][sub_tag.attrib['k']].add(sub_tag.attrib['v'])
 
     return atr_d, st_atr_d, s_st_d, tag_k_v_dict
+
+def summarizes_data_2_tags_deep(filename):
+    atr_d=S_D()
+    st_atr_d=S_DD()
+    s_st_d=S_D()
+    tag_k_v_dict=S_D()
+
+    for _, element in ET.iterparse(filename):
+        dictify_element_and_children(element, atr_d, st_atr_d, s_st_d, tag_k_v_dict)
+    return atr_d, st_atr_d, s_st_d, tag_k_v_dict
+
+def check_keys_list(dict_key_list):
+    problem_keys = []
+    for key in dict_key_list:
+        if RE_PROBLEM_CHARS.search(key):
+            problem_keys.append(key)
+    return problem_keys
+
+###
 
 def audit_count_tags(filename):
     # read osm into xml without loading the entire file
@@ -117,7 +140,7 @@ def process_update_name():
                 assert better_name == "Baldwin Road"
 
 def shape_element(element):
-    node = S_D.copy()
+    node = S_D()
     if element.tag == "node":
         node['type'] = 'node'
         pos = [float(element.attrib.get('lat')), float(element.attrib.get('lon'))]
