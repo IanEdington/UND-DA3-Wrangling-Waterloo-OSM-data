@@ -7,28 +7,16 @@ import re
 import codecs
 import json
 from collections import defaultdict
-from pprint import pprint
 
 
-# Commonly used Regex
-RE_LAST_WORD = re.compile(r'\b\S+\.?$', re.IGNORECASE)
-RE_SECOND_LAST_WORD = re.compile(r'\b\S+\.?$', re.IGNORECASE)
-RE_LOWER = re.compile(r'^([a-z]|_)*$')
-RE_LOWER_COLON = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
+#  Regex
 RE_PROBLEM_CHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
-#http://stackoverflow.com/questions/16614648/canadian-postal-code-regex
 RE_POSTAL_CODE = re.compile(r"^([a-zA-Z]\d[a-zA-Z]( )?\d[a-zA-Z]\d)$")
+    #http://stackoverflow.com/questions/16614648/canadian-postal-code-regex
 
 # Default Dicts used in audit functions
 def S_D(): return defaultdict(lambda : defaultdict(set))
 def S_DD(): return defaultdict(lambda : defaultdict(lambda : defaultdict(set)))
-
-#
-EXPECTED_STREET_NAMES = []
-STREET_NAME_MAPPING = { "St": "Street",
-                    "St.": "Street",
-                    }
-CREATED = [ "version", "changeset", "timestamp", "user", "uid"]
 
 
 #########################
@@ -75,23 +63,6 @@ def check_keys_list(dict_key_list):
             problem_keys.append(key)
     return problem_keys
 
-def audit_street_type(street_types, street_name, regex = RE_LAST_WORD):
-    '''
-    get:
-        street_types = defaultdict(set)
-        street_name = string of street name
-    return:
-        street_types dict with {'last word of street_name': street_name}
-    '''
-    m = regex.search(street_name)
-    street_directions = ['N', 'North', 'E', 'East', 'South', 'West', 'W',]
-    if m:
-        street_type = m.group()
-        if street_type in street_directions:
-            street_types[street_name.split()[-2]].add(street_name)
-        else:
-            street_types[street_type].add(street_name)
-
 def process_audit_address_type(tag_k_v_dict, directions=()):
     street_types = set()
     street_list = wrap_up_tag_k_v_dict(tag_k_v_dict, 'addr:street')
@@ -114,84 +85,95 @@ def wrap_up_tag_k_v_dict(tag_k_v_dict, key):
 ### Load Data into MongoDB ###
 ##############################
 
-def update_name(name, mapping):
-    m = RE_LAST_WORD.search(name)
-    street_type = m.group()
-    better_name = RE_LAST_WORD.sub(mapping[street_type], name)
-    return better_name
+def shape_xml_tree(xml_tree):
+    '''
+    takes xml tree with tag 'node', 'way', or 'relation'
 
-def process_update_name():
-    st_types = process_audit_address_type('example.osm')
-    pprint(dict(st_types))
+    Unpackes into json compatible dict and list structure.
+    returns dictionary
+    {
+     'type':    xml_tree.tag
+     'id':      xml_tree.attrib.get('id')
+     'pos':     [float(xml_tree.attrib.get('lat')),
+                 float(xml_tree.attrib.get('lon'))]
+     'created': {'version':     '2',
+                 'changeset':   '17206049',
+                 'timestamp':   '2013-08-03T16:43:42Z',
+                 'user':        'linuxUser16',
+                 'uid':         '1219059'},
+     'address': {'housenumber': '5157',
+                 'postcode': '60625',
+                 'street': 'North Lincoln Ave'},
+     'member':  [{'type': sub_tag.attribute.get('type'),
+                  'ref':  sub_tag.attribute.get('ref'),
+                  'role': sub_tag.attribute.get('role')},
+                 {...}],
+     'node_refs':[sub_tag.attrib['ref'],
+                  sub_tag.attrib['ref']],
 
-    for _, ways in list(st_types):
-        for name in ways:
-            better_name = update_name(name, STREET_NAME_MAPPING)
-            print (name, "=>", better_name)
-            if name == "West Lexington St.":
-                assert better_name == "West Lexington Street"
-            if name == "Baldwin Rd.":
-                assert better_name == "Baldwin Road"
+     tag['k']:  sub_tag.attrib['v'],
+     }
 
-def shape_element(element):
-    node = S_D()
-    if element.tag == "node":
-        node['type'] = 'node'
-        pos = [float(element.attrib.get('lat')), float(element.attrib.get('lon'))]
-        node['pos'] = pos
-    elif element.tag == "way":
-        node['type'] = 'way'
-    else:
+    '''
+    if xml_tree.tag not in ['node', 'way', 'relation']:
         return {}
 
-    for key, val in element.attrib.items():
-        if key not in ["lat", "lon"]:
-            if key in ["changeset", "user", "version", "uid", "timestamp"]:
-                node['created'][key] = val
-            else:
-                node[key] = val
+    element = {}
 
+    ### Tag:
+    element['type'] = xml_tree.tag
+
+    ### Attributes:
+    element['id'] = xml_tree.attrib.get('id')
+
+    if xml_tree.tag == 'node':
+        pos = [float(xml_tree.attrib.get('lat')), float(xml_tree.attrib.get('lon'))]
+        element['pos'] = pos
+
+    element['created'] = {}
+    for key, val in xml_tree.attrib.items():
+        if key in ["changeset", "user", "version", "uid", "timestamp"]:
+            element['created'][key] = val
+
+    ### sub tags of xml_tree
     node_refs = []
-    for sub_elem in element.iter():
-        if sub_elem.tag == 'tag':
-            if not RE_PROBLEM_CHARS.search(sub_elem.attrib['k']):
-                if sub_elem.attrib['k'][0:5]== 'addr:':
-                    if ':' not in sub_elem.attrib['k'][5:]:
-                        node['address'][sub_elem.attrib['k'][5:]] = sub_elem.attrib['v']
+    members = []
+    address = {}
+    for sub_tag in xml_tree.iter():
+        if sub_tag.tag == 'tag':
+            if not RE_PROBLEM_CHARS.search(sub_tag.attrib['k']):
+                if sub_tag.attrib['k'][0:5]== 'addr:':
+                    address[sub_tag.attrib['k'][5:]] = sub_tag.attrib['v']
                 else:
-                    node[sub_elem.attrib['k']] = sub_elem.attrib['v']
-        elif sub_elem.tag == 'nd':
-            node_refs.append(sub_elem.attrib['ref'])
+                    element[sub_tag.attrib['k']] = sub_tag.attrib['v']
+        elif sub_tag.tag == 'nd':
+            node_refs.append(sub_tag.attrib['ref'])
+        elif sub_tag.tag == 'member':
+            members.append({'type': sub_tag.attrib.get('type'),
+                            'ref': sub_tag.attrib.get('ref'),
+                            'role': sub_tag.attrib.get('role')})
     if node_refs:
-        node['node_refs'] = node_refs
+        element['node_refs'] = node_refs
+    if members:
+        element['members'] = members
+    if address:
+        element['address'] = address
 
-    node = dict(node)
-    return node
+    return element
 
-def process_map_2(file_in, pretty = False):
-    # You do not need to change this file
+def process_map(file_in, pretty = False):
     file_out = "{0}.json".format(file_in)
     data = []
     with codecs.open(file_out, "w") as fo:
-        for _, element in ET.iterparse(file_in):
-            el = shape_element(element)
-            if el:
-                data.append(el)
+        for _, xml_tree in ET.iterparse(file_in):
+            element = shape_xml_tree(xml_tree)
+            if element:
+                data.append(element)
                 if pretty:
-                    fo.write(json.dumps(el, indent=4)+"\n")
+                    fo.write(json.dumps(element, indent=4)+"\n")
                 else:
-                    fo.write(json.dumps(el) + "\n")
+                    fo.write(json.dumps(element) + "\n")
     return data
-
-
-def process_map_3(filename):
-    '''https://docs.python.org/3.4/library/stdtypes.html#set.add'''
-    users = set()
-    for _, element in ET.iterparse(filename):
-        users.add(element.attrib.get('user'))
-    users.remove(None)
-    return users
-
 
 if __name__ == '__main__':
     pass
