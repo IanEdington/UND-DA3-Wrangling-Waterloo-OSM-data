@@ -107,7 +107,7 @@ def shape_xml_tree(xml_tree):
      'member':  [{'type': sub_tag.attribute.get('type'),
                   'ref':  sub_tag.attribute.get('ref'),
                   'role': sub_tag.attribute.get('role')},
-                 {...}],
+                 {.....................................}],
      'node_refs':[sub_tag.attrib['ref'],
                   sub_tag.attrib['ref']],
 
@@ -124,7 +124,7 @@ def shape_xml_tree(xml_tree):
     element['type'] = xml_tree.tag
 
     ### Attributes:
-    element['id'] = xml_tree.attrib.get('id')
+    element['id'] = int(xml_tree.attrib.get('id'))
 
     if xml_tree.tag == 'node':
         pos = [float(xml_tree.attrib.get('lat')), float(xml_tree.attrib.get('lon'))]
@@ -132,7 +132,9 @@ def shape_xml_tree(xml_tree):
 
     element['created'] = {}
     for key, val in xml_tree.attrib.items():
-        if key in ["changeset", "user", "version", "uid", "timestamp"]:
+        if key in ["uid", "version", "changeset"]:
+            element['created'][key] = int(val)
+        if key in ["user", "timestamp"]:
             element['created'][key] = val
 
     ### sub tags of xml_tree
@@ -140,24 +142,32 @@ def shape_xml_tree(xml_tree):
     members = []
     address = {}
     for sub_tag in xml_tree.iter():
+        ### sub tag of 'tag'
         if sub_tag.tag == 'tag':
             if not RE_PROBLEM_CHARS.search(sub_tag.attrib['k']):
                 if sub_tag.attrib['k'][0:5]== 'addr:':
                     address[sub_tag.attrib['k'][5:]] = sub_tag.attrib['v']
                 else:
                     element[sub_tag.attrib['k']] = sub_tag.attrib['v']
+        ### sub tag of 'nd'
         elif sub_tag.tag == 'nd':
-            node_refs.append(sub_tag.attrib['ref'])
+            node_refs.append(int(sub_tag.attrib['ref']))
+        ### sub tag of 'member'
         elif sub_tag.tag == 'member':
-            members.append({'type': sub_tag.attrib.get('type'),
-                            'ref': sub_tag.attrib.get('ref'),
-                            'role': sub_tag.attrib.get('role')})
+            mem = {}
+            for k, v in sub_tag.attrib.items():
+                if v:
+                    if k == 'ref':
+                        mem[k] = int(v)
+                    else:
+                        mem[k] = v
+            members.append(mem)
     if node_refs:
-        element['node_refs'] = node_refs
+        element['nd'] = node_refs
     if members:
-        element['members'] = members
+        element['member'] = members
     if address:
-        element['address'] = address
+        element['addr'] = address
 
     return element
 
