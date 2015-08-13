@@ -16,6 +16,8 @@ RE_SECOND_LAST_WORD = re.compile(r'\b\S+\.?$', re.IGNORECASE)
 RE_LOWER = re.compile(r'^([a-z]|_)*$')
 RE_LOWER_COLON = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
 RE_PROBLEM_CHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
+#http://stackoverflow.com/questions/16614648/canadian-postal-code-regex
+RE_POSTAL_CODE = re.compile(r"^([a-zA-Z]\d[a-zA-Z]( )?\d[a-zA-Z]\d)$")
 
 # Default Dicts used in audit functions
 def S_D(): return defaultdict(lambda : defaultdict(set))
@@ -90,18 +92,27 @@ def audit_street_type(street_types, street_name, regex = RE_LAST_WORD):
         else:
             street_types[street_type].add(street_name)
 
-def process_audit_address_type(osmfile, addr_v = "addr:street", regex = RE_LAST_WORD):
-    osm_file = open(osmfile, "r")
-    street_types = defaultdict(set)
-    for _, elem in ET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "tag":
-            if (elem.attrib['k'] == addr_v):
-                audit_street_type(street_types, elem.attrib['v'], regex)
+def process_audit_address_type(tag_k_v_dict, directions=()):
+    street_types = set()
+    street_list = wrap_up_tag_k_v_dict(tag_k_v_dict, 'addr:street')
+
+    for v in list(street_list):
+        street_name = v
+        street_split = street_name.split()
+        if street_split[-1] in directions:
+            street_types.add(street_split[-2])
+        else:
+            street_types.add(street_split[-1])
+
     return street_types
 
-#########################
-###  ###
-#########################
+def wrap_up_tag_k_v_dict(tag_k_v_dict, key):
+    return tag_k_v_dict['node'][key] | tag_k_v_dict['node'][key] | tag_k_v_dict['way'][key]
+
+
+##############################
+### Load Data into MongoDB ###
+##############################
 
 def update_name(name, mapping):
     m = RE_LAST_WORD.search(name)
@@ -113,7 +124,7 @@ def process_update_name():
     st_types = process_audit_address_type('example.osm')
     pprint(dict(st_types))
 
-    for _, ways in st_types.items():
+    for _, ways in list(st_types):
         for name in ways:
             better_name = update_name(name, STREET_NAME_MAPPING)
             print (name, "=>", better_name)
