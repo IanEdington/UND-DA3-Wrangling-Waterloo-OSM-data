@@ -1,5 +1,5 @@
 '''
-
+    this is a doc string
 '''
 
 import xml.etree.cElementTree as ET
@@ -15,15 +15,22 @@ RE_POSTAL_CODE = re.compile(r"^([a-zA-Z]\d[a-zA-Z]( )?\d[a-zA-Z]\d)$")
     #http://stackoverflow.com/questions/16614648/canadian-postal-code-regex
 
 # Default Dicts used in audit functions
-def S_D(): return defaultdict(lambda : defaultdict(set))
-def S_DD(): return defaultdict(lambda : defaultdict(lambda : defaultdict(set)))
-
+def def_dict_2():
+    '''
+    defaultdict two deep with default of set
+    '''
+    return defaultdict(lambda: defaultdict(set))
+def def_dict_3():
+    '''
+    defaultdict three deep with default of set
+    '''
+    return defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
 
 #########################
 ### Auditing the data ###
 #########################
 
-def dictify_element_and_children(element, atr_d=S_D(), st_atr_d=S_DD(), s_st_d=S_D(), tag_k_v_dict=S_D()):
+def dictify_element_and_children(element, atr_d=def_dict_2(), st_atr_d=def_dict_3(), s_st_d=def_dict_2(), tag_k_v_dict=def_dict_2()):
     '''
     take a start xml tag
 
@@ -47,10 +54,10 @@ def dictify_element_and_children(element, atr_d=S_D(), st_atr_d=S_DD(), s_st_d=S
     return atr_d, st_atr_d, s_st_d, tag_k_v_dict
 
 def summarizes_data_2_tags_deep(filename):
-    atr_d=S_D()
-    st_atr_d=S_DD()
-    s_st_d=S_D()
-    tag_k_v_dict=S_D()
+    atr_d = def_dict_2()
+    st_atr_d = def_dict_3()
+    s_st_d = def_dict_2()
+    tag_k_v_dict = def_dict_2()
 
     for _, element in ET.iterparse(filename):
         dictify_element_and_children(element, atr_d, st_atr_d, s_st_d, tag_k_v_dict)
@@ -67,8 +74,8 @@ def process_audit_address_type(tag_k_v_dict, directions=()):
     street_types = set()
     street_list = wrap_up_tag_k_v_dict(tag_k_v_dict, 'addr:street')
 
-    for v in list(street_list):
-        street_name = v
+    for val in list(street_list):
+        street_name = val
         street_split = street_name.split()
         if street_split[-1] in directions:
             street_types.add(street_split[-2])
@@ -84,6 +91,73 @@ def wrap_up_tag_k_v_dict(tag_k_v_dict, key):
 ##############################
 ### Load Data into MongoDB ###
 ##############################
+
+
+### variable maps to swap out non normal values for normal values
+
+ST_DIR_MAP = {'S': 'South',
+              's': 'South',
+              'South': 'South',
+              'E': 'East',
+              'e': 'East',
+              'East': 'East',
+              'W': 'West',
+              'w': 'West',
+              'West': 'West',
+              'N': 'North',
+              'n': 'North',
+              'North': 'North'}
+
+ST_TYPE_MAP = {'AVenue': 'Avenue',
+               'Ave': 'Avenue',
+               'Crescent': 'Cresent',
+               'Dr': 'Drive',
+               'Dr.': 'Drive',
+               'Rd': 'Road',
+               'St': 'Street',
+               'St.': 'Street',
+               'Steet': 'Street'}
+
+PROV_MAP = {'ON': 'ON',
+            'Ontario': 'ON',
+            'on': 'ON',
+            'ontario': 'ON'}
+
+CITY_MAP = {'City of Cambridge': 'Cambridge',
+            'City of Kitchener': 'Kitchener',
+            'kitchener': 'Kitchener',
+            'City of Waterloo': 'Waterloo',
+            'waterloo': 'Waterloo',
+            'St. Agatha': 'Saint Agatha'}
+
+def map_subin(val, val_map):
+    if val in val_map.keys():
+        return val_map[val]
+    else:
+        return val
+
+def update_street(street):
+    st_list = street.split()
+    if st_list[-1] in ST_DIR_MAP.keys():
+        st_list[-1] = map_subin(st_list[-1], ST_DIR_MAP)
+        st_list[-2] = map_subin(st_list[-2], ST_TYPE_MAP)
+    elif st_list[-1] in ST_TYPE_MAP.keys():
+        st_list[-1] = map_subin(st_list[-1], ST_TYPE_MAP)
+    return ' '.join(st_list)
+
+def update_address(key, val, addr_dict):
+    if key == 'addr:street':
+        addr_dict[key[5:]] = update_street(val)
+    elif key == 'addr:state':
+        if not addr_dict.get('province'):
+            addr_dict['province'] = map_subin(val, PROV_MAP)
+    elif key == 'addr:province':
+        addr_dict[key[5:]] = map_subin(val, PROV_MAP)
+    elif key == 'addr:city':
+        addr_dict[key[5:]] = map_subin(val, CITY_MAP)
+    else:
+        addr_dict[key[5:]] = val
+    return addr_dict
 
 def shape_xml_tree(xml_tree):
     '''
@@ -115,6 +189,7 @@ def shape_xml_tree(xml_tree):
      }
 
     '''
+    ### returns an empty element if the xml_tree is not a node, way or relation
     if xml_tree.tag not in ['node', 'way', 'relation']:
         return {}
 
@@ -138,30 +213,50 @@ def shape_xml_tree(xml_tree):
             element['created'][key] = val
 
     ### sub tags of xml_tree
+    # dicts and lists for constucted values
     node_refs = []
     members = []
     address = {}
+
+    # looping though each sub tag of xml_tree
     for sub_tag in xml_tree.iter():
+
         ### sub tag of 'tag'
         if sub_tag.tag == 'tag':
-            if not RE_PROBLEM_CHARS.search(sub_tag.attrib['k']):
-                if sub_tag.attrib['k'][0:5]== 'addr:':
-                    address[sub_tag.attrib['k'][5:]] = sub_tag.attrib['v']
+            key = sub_tag.attrib['k']
+            val = sub_tag.attrib['v']
+
+            ### addr: tags are sent to update_address function
+            if key[0:5] == 'addr:':
+                address = update_address(key, val, address)
+
+            ### merge 'fixme' and 'FIXME' into 'FIXME'
+            elif key in ['fixme', 'FIXME']:
+                if element.get('FIXME'):
+                    element['FIXME'] += '\nFIXME: ' + val
                 else:
-                    element[sub_tag.attrib['k']] = sub_tag.attrib['v']
+                    element['FIXME'] = val
+
+            ### all other tag tags get added as k:v pairs
+            else:
+                element[key] = val
+
         ### sub tag of 'nd'
         elif sub_tag.tag == 'nd':
             node_refs.append(int(sub_tag.attrib['ref']))
+
         ### sub tag of 'member'
         elif sub_tag.tag == 'member':
             mem = {}
-            for k, v in sub_tag.attrib.items():
-                if v:
-                    if k == 'ref':
-                        mem[k] = int(v)
+            for key, val in sub_tag.attrib.items():
+                if val:
+                    if key == 'ref':
+                        mem[key] = int(val)
                     else:
-                        mem[k] = v
+                        mem[key] = val
             members.append(mem)
+
+    ### append all the constructed vaules
     if node_refs:
         element['nd'] = node_refs
     if members:
@@ -171,18 +266,18 @@ def shape_xml_tree(xml_tree):
 
     return element
 
-def process_map(file_in, pretty = False):
+def process_map(file_in, pretty=False):
     file_out = "{0}.json".format(file_in)
     data = []
-    with codecs.open(file_out, "w") as fo:
+    with codecs.open(file_out, "w") as file_out:
         for _, xml_tree in ET.iterparse(file_in):
             element = shape_xml_tree(xml_tree)
             if element:
                 data.append(element)
                 if pretty:
-                    fo.write(json.dumps(element, indent=4)+"\n")
+                    file_out.write(json.dumps(element, indent=4)+"\n")
                 else:
-                    fo.write(json.dumps(element) + "\n")
+                    file_out.write(json.dumps(element) + "\n")
     return data
 
 if __name__ == '__main__':
