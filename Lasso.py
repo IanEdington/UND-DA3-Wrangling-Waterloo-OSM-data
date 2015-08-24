@@ -165,28 +165,34 @@ def shape_xml_tree(xml_tree):
 
     Unpackes into json compatible dict and list structure.
     returns dictionary
-    {
-     'type':    xml_tree.tag
-     'id':      xml_tree.attrib.get('id')
-     'pos':     [float(xml_tree.attrib.get('lat')),
-                 float(xml_tree.attrib.get('lon'))]
-     'created': {'version':     '2',
-                 'changeset':   '17206049',
-                 'timestamp':   '2013-08-03T16:43:42Z',
-                 'user':        'linuxUser16',
-                 'uid':         '1219059'},
-     'address': {'housenumber': '5157',
-                 'postcode': '60625',
-                 'street': 'North Lincoln Ave'},
-     'member':  [{'type': sub_tag.attribute.get('type'),
-                  'ref':  sub_tag.attribute.get('ref'),
-                  'role': sub_tag.attribute.get('role')},
-                 {.....................................}],
-     'node_refs':[sub_tag.attrib['ref'],
-                  sub_tag.attrib['ref']],
 
-     tag['k']:  sub_tag.attrib['v'],
-     }
+    {'type':    xml_tree.tag,
+
+     'id':      int(xml_tree('id')),
+
+     'pos':     [float(xml_tree('lat')),
+                 float(xml_tree('lon'))],
+
+     'created': {'version':     int(xml_tree('uid')),
+                 'changeset':   int(xml_tree('changeset')),
+                 'timestamp':   xml_tree('timestamp'),
+                 'user':        xml_tree('user'),
+                 'uid':         int(xml_tree('uid'))},
+
+     'address': {'housenumber': tag_tag['addr:housenumber'],
+                 'postcode': tag_tag['addr:postcode'],
+                 'street': tag_tag['addr:street'], ...},
+
+     'member':  [{'type': member_tag('type'),
+                  'ref':  int(member_tag('ref')),
+                  'role': member_tag('role')},
+                 {..........................}],
+
+     'node_refs':[int(nd_tag['ref']),
+                  int(nd_tag['ref']), ... ],
+
+      tag['k']:  tag_tag['v'],
+      tag['k']:  tag_tag['v'], ... }
 
     '''
     ### returns an empty element if the xml_tree is not a node, way or relation
