@@ -191,8 +191,10 @@ def shape_xml_tree(xml_tree):
      'node_refs':[int(nd_tag['ref']),
                   int(nd_tag['ref']), ... ],
 
-      tag['k']:  tag_tag['v'],
-      tag['k']:  tag_tag['v'], ... }
+     'tag': {tag['k']:  tag_tag['v'],
+             tag['k']:  tag_tag['v'],
+             ... }
+     }
 
     '''
     ### returns an empty element if the xml_tree is not a node, way or relation
@@ -223,6 +225,7 @@ def shape_xml_tree(xml_tree):
     node_refs = []
     members = []
     address = {}
+    tags = {}
 
     # looping though each sub tag of xml_tree
     for sub_tag in xml_tree.iter():
@@ -238,14 +241,14 @@ def shape_xml_tree(xml_tree):
 
             ### merge 'fixme' and 'FIXME' into 'FIXME'
             elif key in ['fixme', 'FIXME']:
-                if element.get('FIXME'):
-                    element['FIXME'] += '\nFIXME: ' + val
+                if tags.get('FIXME'):
+                    tags['FIXME'] += '\nFIXME: ' + val
                 else:
-                    element['FIXME'] = val
+                    tags['FIXME'] = val
 
             ### all other tag tags get added as k:v pairs
             else:
-                element[key] = val
+                tags[key] = val
 
         ### sub tag of 'nd'
         elif sub_tag.tag == 'nd':
@@ -269,6 +272,8 @@ def shape_xml_tree(xml_tree):
         element['member'] = members
     if address:
         element['addr'] = address
+    if tags:
+        element['tag'] = tags
 
     return element
 
