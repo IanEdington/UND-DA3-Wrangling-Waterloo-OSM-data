@@ -1,5 +1,5 @@
 '''
-    this is a doc string
+    The lasso module contains all the functions used in data wrangling the Open Street Map Data for Udacity's Data Wrangling Final Project
 '''
 
 import xml.etree.cElementTree as ET
@@ -11,28 +11,33 @@ from collections import defaultdict
 
 #  Regex
 RE_PROBLEM_CHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
-RE_POSTAL_CODE = re.compile(r"^([a-zA-Z]\d[a-zA-Z]( )?\d[a-zA-Z]\d)$")
-    #http://stackoverflow.com/questions/16614648/canadian-postal-code-regex
+RE_POSTAL_CODE = re.compile(r"^([a-zA-Z]\d[a-zA-Z] ?\d[a-zA-Z]\d)$")
+# http://stackoverflow.com/questions/16614648/canadian-postal-code-regex
+
 
 # Default Dicts used in audit functions
 def def_dict_2():
     '''
-    defaultdict two deep with default of set
+    defaultdict two dict deep with default of set
     '''
     return defaultdict(lambda: defaultdict(set))
+
+
 def def_dict_3():
     '''
-    defaultdict three deep with default of set
+    defaultdict three dict deep with default of set
     '''
     return defaultdict(lambda: defaultdict(lambda: defaultdict(set)))
+
 
 #########################
 ### Auditing the data ###
 #########################
 
+
 def dictify_element_and_children(element, atr_d=def_dict_2(), st_atr_d=def_dict_3(), s_st_d=def_dict_2(), tag_k_v_dict=def_dict_2()):
     '''
-    take a start xml tag
+    From each element in the xml tree creats/adds summary dictionaries to better understand the data contained in the OSM xml.
 
     return:
         1 - attrib_dict (atr_d): should return all potential attributes with a set of all answers
@@ -53,7 +58,11 @@ def dictify_element_and_children(element, atr_d=def_dict_2(), st_atr_d=def_dict_
 
     return atr_d, st_atr_d, s_st_d, tag_k_v_dict
 
+
 def summarizes_data_2_tags_deep(filename):
+    '''
+    uses dictify_element_and_children to loop through entire xml tree creating summary data.
+    '''
     atr_d = def_dict_2()
     st_atr_d = def_dict_3()
     s_st_d = def_dict_2()
@@ -63,14 +72,26 @@ def summarizes_data_2_tags_deep(filename):
         dictify_element_and_children(element, atr_d, st_atr_d, s_st_d, tag_k_v_dict)
     return atr_d, st_atr_d, s_st_d, tag_k_v_dict
 
+
 def check_keys_list(dict_key_list):
+    '''
+        checks a list of dictionary keys for problem characters
+    '''
     problem_keys = []
     for key in dict_key_list:
         if RE_PROBLEM_CHARS.search(key):
             problem_keys.append(key)
     return problem_keys
 
+
 def process_audit_address_type(tag_k_v_dict, directions=()):
+    '''
+    loops though all street addesses putting all the street types in a set
+    if the last word in the steet addess is a direction (E, W, N, S)
+        it uses the second last word in the street address
+    if not
+        it uses the last word in the street address
+    '''
     street_types = set()
     street_list = wrap_up_tag_k_v_dict(tag_k_v_dict, 'addr:street')
 
@@ -84,8 +105,12 @@ def process_audit_address_type(tag_k_v_dict, directions=()):
 
     return street_types
 
+
 def wrap_up_tag_k_v_dict(tag_k_v_dict, key):
-    return tag_k_v_dict['node'][key] | tag_k_v_dict['node'][key] | tag_k_v_dict['way'][key]
+    '''
+    used to look at the key value pairs of nodes, ways, and relations together
+    '''
+    return tag_k_v_dict['node'][key] | tag_k_v_dict['relation'][key] | tag_k_v_dict['way'][key]
 
 
 ##############################
@@ -93,8 +118,8 @@ def wrap_up_tag_k_v_dict(tag_k_v_dict, key):
 ##############################
 
 
-### variable maps to swap out non normal values for normal values
-
+# Variable maps to swap out non normal values for normal values
+# street direction map
 ST_DIR_MAP = {'S': 'South',
               's': 'South',
               'South': 'South',
@@ -108,6 +133,7 @@ ST_DIR_MAP = {'S': 'South',
               'n': 'North',
               'North': 'North'}
 
+# Street type map
 ST_TYPE_MAP = {'AVenue': 'Avenue',
                'Ave': 'Avenue',
                'Crescent': 'Cresent',
@@ -118,11 +144,13 @@ ST_TYPE_MAP = {'AVenue': 'Avenue',
                'St.': 'Street',
                'Steet': 'Street'}
 
+# Province Map
 PROV_MAP = {'ON': 'ON',
             'Ontario': 'ON',
             'on': 'ON',
             'ontario': 'ON'}
 
+# City Map
 CITY_MAP = {'City of Cambridge': 'Cambridge',
             'City of Kitchener': 'Kitchener',
             'kitchener': 'Kitchener',
@@ -130,20 +158,36 @@ CITY_MAP = {'City of Cambridge': 'Cambridge',
             'waterloo': 'Waterloo',
             'St. Agatha': 'Saint Agatha'}
 
+
 def map_subin(val, val_map):
+    '''
+    Subs in a value from a map given the map and a value
+    '''
+    # returns the maped value if it's in the map
     if val in val_map.keys():
         return val_map[val]
     else:
+        # returns the original value if it's not in the map
         return val
 
+
 def update_street(street):
+    '''
+    uses the map_subin function to subin corrected street types and street directions
+    '''
+    # split the street address into a list of words
     st_list = street.split()
+
     if st_list[-1] in ST_DIR_MAP.keys():
+        # if the last word is a direction sub both direction(-1) & type(-2)
         st_list[-1] = map_subin(st_list[-1], ST_DIR_MAP)
         st_list[-2] = map_subin(st_list[-2], ST_TYPE_MAP)
-    elif st_list[-1] in ST_TYPE_MAP.keys():
+    else:
+        # otherwise sub in the street type
         st_list[-1] = map_subin(st_list[-1], ST_TYPE_MAP)
+
     return ' '.join(st_list)
+
 
 def update_address(key, val, addr_dict):
     if key == 'addr:street':
@@ -159,12 +203,114 @@ def update_address(key, val, addr_dict):
         addr_dict[key[5:]] = val
     return addr_dict
 
+
+def tag_subtag_process(sub_tag, address, tags):
+    key = sub_tag.attrib['k']
+    val = sub_tag.attrib['v']
+
+    # addr: tags are sent to update_address function
+    if key[0:5] == 'addr:':
+        address = update_address(key, val, address)
+
+    # merge 'fixme' and 'FIXME' into 'FIXME'
+    elif key in ['fixme', 'FIXME']:
+        if tags.get('FIXME'):
+            tags['FIXME'] += '\nFIXME: ' + val
+        else:
+            tags['FIXME'] = val
+
+    # all other tag tags get added as k:v pairs
+    else:
+        tags[key] = val
+
+    return address, tags
+
+
+def subtag_process(xml_tree):
+    '''
+    adds sub tags of an osm xml element to lists and dicts for easy joining to the JSON structure
+    '''
+    # dicts and lists for constucted values
+    node_refs = []
+    members = []
+    address = {}
+    tags = {}
+
+    # looping though each sub tag of xml_tree
+    for sub_tag in xml_tree.iter():
+
+        # sub tag of 'tag' sent to tag function
+        if sub_tag.tag == 'tag':
+            address, tags = tag_subtag_process(sub_tag, address, tags)
+
+        # sub tag of 'nd' appended in order to list
+        elif sub_tag.tag == 'nd':
+            node_refs.append(int(sub_tag.attrib['ref']))
+
+        # sub tag of 'member' appended in order as a list of dicts
+        elif sub_tag.tag == 'member':
+            mem = {}
+            for key, val in sub_tag.attrib.items():
+                if val:
+                    if key == 'ref':
+                        mem[key] = int(val)
+                    else:
+                        mem[key] = val
+            members.append(mem)
+
+    return node_refs, members, address, tags
+
+
 def shape_xml_tree(xml_tree):
     '''
-    takes xml tree with tag 'node', 'way', or 'relation'
+    takes an xml element (node, way, or relation) and converts it into a json element including data from it's sub tags.
+    '''
+    # returns an empty element if the xml_tree is not a node, way or relation
+    if xml_tree.tag not in ['node', 'way', 'relation']:
+        return {}
+
+    # This is the element we will return at the end
+    element = {}
+
+    # building out the xml_tree attributes
+    element['type'] = xml_tree.tag
+    element['id'] = int(xml_tree.attrib.get('id'))
+
+    # location info from the start tag is converted into a list of two floats for easy coordinal searches in MongoDB
+    if xml_tree.tag == 'node':
+        pos = [float(xml_tree.attrib.get('lat')), float(xml_tree.attrib.get('lon'))]
+        element['pos'] = pos
+
+    # creation info is saved in a dictionary under the creation key
+    element['created'] = {}
+    for key, val in xml_tree.attrib.items():
+        if key in ["uid", "version", "changeset"]:
+            element['created'][key] = int(val)
+        if key in ["user", "timestamp"]:
+            element['created'][key] = val
+
+    # sub tags are processed in the subtag_process function
+    node_refs, members, address, tags = subtag_process(xml_tree)
+
+    # append all the subtag values
+    if node_refs:
+        element['nd'] = node_refs
+    if members:
+        element['member'] = members
+    if address:
+        element['addr'] = address
+    if tags:
+        element['tag'] = tags
+
+    return element
+
+
+def process_map(file_in, pretty=False):
+    '''
+    takes xml file with tag 'node', 'way', or 'relation'
 
     Unpackes into json compatible dict and list structure.
-    returns dictionary
+    saves the json to file for easy import into MongoDB
 
     {'type':    xml_tree.tag,
 
@@ -195,89 +341,8 @@ def shape_xml_tree(xml_tree):
              tag['k']:  tag_tag['v'],
              ... }
      }
-
     '''
-    ### returns an empty element if the xml_tree is not a node, way or relation
-    if xml_tree.tag not in ['node', 'way', 'relation']:
-        return {}
 
-    element = {}
-
-    ### Tag:
-    element['type'] = xml_tree.tag
-
-    ### Attributes:
-    element['id'] = int(xml_tree.attrib.get('id'))
-
-    if xml_tree.tag == 'node':
-        pos = [float(xml_tree.attrib.get('lat')), float(xml_tree.attrib.get('lon'))]
-        element['pos'] = pos
-
-    element['created'] = {}
-    for key, val in xml_tree.attrib.items():
-        if key in ["uid", "version", "changeset"]:
-            element['created'][key] = int(val)
-        if key in ["user", "timestamp"]:
-            element['created'][key] = val
-
-    ### sub tags of xml_tree
-    # dicts and lists for constucted values
-    node_refs = []
-    members = []
-    address = {}
-    tags = {}
-
-    # looping though each sub tag of xml_tree
-    for sub_tag in xml_tree.iter():
-
-        ### sub tag of 'tag'
-        if sub_tag.tag == 'tag':
-            key = sub_tag.attrib['k']
-            val = sub_tag.attrib['v']
-
-            ### addr: tags are sent to update_address function
-            if key[0:5] == 'addr:':
-                address = update_address(key, val, address)
-
-            ### merge 'fixme' and 'FIXME' into 'FIXME'
-            elif key in ['fixme', 'FIXME']:
-                if tags.get('FIXME'):
-                    tags['FIXME'] += '\nFIXME: ' + val
-                else:
-                    tags['FIXME'] = val
-
-            ### all other tag tags get added as k:v pairs
-            else:
-                tags[key] = val
-
-        ### sub tag of 'nd'
-        elif sub_tag.tag == 'nd':
-            node_refs.append(int(sub_tag.attrib['ref']))
-
-        ### sub tag of 'member'
-        elif sub_tag.tag == 'member':
-            mem = {}
-            for key, val in sub_tag.attrib.items():
-                if val:
-                    if key == 'ref':
-                        mem[key] = int(val)
-                    else:
-                        mem[key] = val
-            members.append(mem)
-
-    ### append all the constructed vaules
-    if node_refs:
-        element['nd'] = node_refs
-    if members:
-        element['member'] = members
-    if address:
-        element['addr'] = address
-    if tags:
-        element['tag'] = tags
-
-    return element
-
-def process_map(file_in, pretty=False):
     file_out = "{0}.json".format(file_in)
     data = []
     with codecs.open(file_out, "w") as file_out:
