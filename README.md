@@ -242,9 +242,15 @@ Student provides a statistical overview about their chosen dataset, like:
 
 ###3. Additional Ideas
 
-The Region of Waterloo has a large amount of open data part of which is map data related to bike routs. Although some of the routs are in OSM not all are. The data from Waterloo is updated annually and there should be a way to automate an annual import, matching already imported data.
+The Region of Waterloo has a large amount of open data part of which is map data related to bike routs. Although some of the routs are in OSM some are not or don't have as much detail. The data from Waterloo is updated annually and there should be a way to automate an annual import, matching already imported data.
+
+From a technical point of view one problem that could come up is how to match routs already in OSM to routs in the city data. Although it is beyond the scope of this coures I understand that merging data is often a very difficult problem to solve programatically. I would imagin that with data coming from many different, and sometimes unreliable, sources this merge problem would be a big one.
 
 With the increase of cyclists there might be an opportunity for a bike friendly GPS app. Since a lot of cyclists feel a sense of comradery with other cyclists, building a comunity around what roads are good for different bikers might be a good way to insight high quality data. As we can see below there is very little in terms of bicycle data on OSM for Waterloo.
+
+Even though it would be difficult to merge data reliably and building a reliable app would, the biggest problems with making a new bike focused GPS app wouldn't be technical. Given the right budget a bike GPS app is feasable, however, understanding what cyclists need in an app and developing a community that collaborates together would be a massive challenge. Even after building a small community, how do you grow it sustainably? How do you monatize the community once it is built? ... And finally, is it worth the money/time you spent building the app in the first place.
+
+There are a lot of problems that could arise that are outside the scope ot this course. However, all of these problems can be mitigated and even turned into advantages given the right team.
 
 #### Bikeable ways verses non bikeable ways
 
