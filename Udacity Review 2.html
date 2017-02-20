@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://review.udacity.com/#!/reviews/43722 -->
+<html data-ng-app="udacity.grading" data-enforce-browser="" class="ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
+    <!--[if lte IE 9]>
+    <script type="text/javascript">
+      window.location = 'https://www.udacity.com/upgrade';
+    </script>
+    <![endif]-->
+    <title>Udacity Reviews</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://review.udacity.com/assets/images/favicon.ico">
+    <meta name="description" content="Discover online classes taught by top instructors and industry experts. Take courses at your own pace.">
+
+    <meta name="robots" content="noodp">
+
+    <meta property="og:image" content="//lh6.ggpht.com/pXxnDpPZHXnKqBqwvI4cmhsztuM23lbmy0o5zVEZTfXQR69u5Nlx7hfxcCOGZP_Yp_3HwpK3zVAtXejMAg=s0">
+
+    <meta name="application-name" content="Udacity">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="assets/img/logos/udacity/windows_tile/udacity-full-144x144.png">
+
+    <meta name="google-site-verification" content="ELX2btu3VElBKIdvkGj5ESBnJh_Dg9PnWjuCwVkPEkA">
+
+    <meta http-equiv="X-UA-Compatible" content="requiresActiveX=true">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="https://lh4.ggpht.com/dR8q0uh3GoH-kU00KnQ1elSkqBeWi-ZOQ1_14uDxWRACmhrIDQFOfItKdAf7hngoResshnbb9hmVpPuwkjI=s0#w=152&h=152">
+
+    <link type="text/plain" rel="author" href="http://udacity.com/humans.txt">
+
+    <link rel="stylesheet" href="./Udacity Review 2_files/udacity.min.css" type="text/css">
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="https://review.udacity.com/assets/grading_61adc2f1.css">
+    <!-- endinject -->
+
+  </head>
+  <body data-modal-anti-scroll-helper="" class="responsive ng-scope" ng-controller="MainCtrl as main">
+    <div id="page-content" data-qualaroo-survey-info-hack="">
+      <header class="navbar site-nav navbar-inverse navbar-static-top navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            <a class="logo navbar-brand" href="https://udacity.com/" id="header-logo">
+              <img alt="Udacity Logo" src="./Udacity Review 2_files/LUgsz3XTdD-dW9qCenNcFZWaBKM6At_MbMjODMCJOC8ZoR4hIm_rVBQghBmk5kQ-kRa66yhEQT0BH88gUmwX=s85" srcset="//lh4.ggpht.com/LUgsz3XTdD-dW9qCenNcFZWaBKM6At_MbMjODMCJOC8ZoR4hIm_rVBQghBmk5kQ-kRa66yhEQT0BH88gUmwX=s170 2x" style="width:85px;">
+            </a>
+          </div>
+          <nav class="navbar-collapse collapse text-center-xs" id="navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right">
+              <!-- ngIf: main.isGrader() -->
+              <li>
+                <a data-ng-click="main.logout()" href="">Logout</a>
+              </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <ul class="dropdown-menu">
+                  <a data-ng-click="main.logout()" href="">Logout</a>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+
+        </div>
+      </header>
+
+      <div loading-container="" class="container-fluid"><div ng-show="loading" class="row ng-hide"> <div class="col-sm-6 col-sm-offset-3 text-center"> <div class="row row-gap-huge"></div> <img src="./Udacity Review 2_files/b3OandPWsUWAnRVS5d8JS8OL0nu8dU2d3NceS7p1yKhPl9KD4EhqeylPm7yFbft5wmsA2VCAZ-8wAkmFduXJ=s0"> <div class="row row-gap-huge"></div> </div> </div> <div ng-show="!loading" class=""> <div ng-transclude="">
+        <div class="row row-gap-medium ng-isolate-scope ng-hide" ng-show="!!message &amp;&amp; !dismissed" ng-class="{fadeInDown: !!message, fadeOutUp: dismissed, animated: !!message || dismissed}" alert-box=""> <div class="col-md-offset-3 col-md-6"> <div class="alert alert-success hr-slim ng-binding"> <button type="button" ng-click="dismiss()" class="close" aria-label="Close"> <span aria-hidden="true">×</span> </button> <img class="icon img-initial" src="./Udacity Review 2_files/checkmark.svg"> </div> </div> </div>
+        <!-- uiView:  --><div ui-view="" class="ng-scope"><div class="row ng-scope"> <div class="col-md-8 col-md-offset-2"> <h1 class="ng-binding">Data Wrangle OpenstreetMaps Data</h1> <ul class="nav nav-tabs" ng-hide="isUngradeable()"> <li ng-class="{&#39;active&#39;: isCurrentTab(&#39;notes&#39;)}"> <a class="navbar-item" href="" ng-click="showTab(&#39;notes&#39;)">Student Notes</a> </li> <li ng-class="{&#39;active&#39;: isCurrentTab(&#39;code&#39;)}"> <a class="navbar-item" href="" ng-click="showTab(&#39;code&#39;)"> Code Review&nbsp; <!-- ngIf: commentsCount > 0 --> </a> </li> <!-- ngIf: hasFeedback --><li ng-if="hasFeedback" ng-class="{&#39;active&#39;: isCurrentTab(&#39;feedback&#39;)}" class="ng-scope active"> <a class="navbar-item" href="" ng-click="showTab(&#39;feedback&#39;)">Project Review</a> </li><!-- end ngIf: hasFeedback --> <!-- ngIf: showPastReviews --><li ng-if="showPastReviews" ng-class="{&#39;active&#39;: isCurrentTab(&#39;reviews&#39;)}" class="ng-scope"> <a class="navbar-item" href="" ng-click="showTab(&#39;reviews&#39;)">Project History</a> </li><!-- end ngIf: showPastReviews --> <!-- ngIf: auditTabState.visible --> </ul> </div> </div> <div class="row ng-scope"> <div class="col-md-8 col-md-offset-2"> <div ng-show="isUngradeable()" class="ng-hide"> <p> Your project could not be reviewed. Please resubmit after you address the issue noted by the reviewer. </p> <strong>Reviewer's Assessment</strong> <p marked="submission.result_reason" class="ng-isolate-scope"></p> <div class="row row-gap-medium"></div> <a href="https://udacity-github-sync-content.s3.amazonaws.com/_submissions/43722_7ajgh.zip"> <i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download your submission </a> <div class="row row-gap-medium"></div> </div> <div ng-hide="isUngradeable()"> <div class="row row-gap-medium"></div> <section ng-show="isCurrentTab(&#39;notes&#39;)" class="ng-hide"> <div class="submission-notes ng-isolate-scope" marked="submission.notes || &#39;_None provided_&#39;"><p>Looking forward to getting your feedback :D</p>
+</div> <div class="row row-gap-medium"></div> </section> <section class="code-section ng-hide" ng-show="isCurrentTab(&#39;code&#39;)"> <a href="https://udacity-github-sync-content.s3.amazonaws.com/_submissions/43722_7ajgh.zip"> <i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download submission </a> <div class="row row-gap-small"></div> <!-- ngIf: files --><div code-review="" ng-if="files" files="files" allow-comments="false" class="ng-scope ng-isolate-scope"><div ng-show="allowComments" class="ng-hide"> <input type="text" class="form-control ng-pristine ng-untouched ng-valid" ng-model="filterPattern" placeholder="File filter (e.g. &quot;readme.md&quot;, &quot;.css&quot;, &quot;src/lib/*.js&quot;)"> <div class="row row-gap-small"></div> </div> <!-- ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">lesson-6/users.py</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">lesson-6/tags.py</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">lesson-6/mapparser.py</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">lesson-6/data.py</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">lesson-6/audit.py</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">Wrangling Waterloo OSM Report.html</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">README.md</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --><div class="code-section-item ng-scope" ng-repeat="file in files" ng-show="isFileVisible(file)"> <div class="code-section-item-title" ng-click="setCurrentFileIndex($index)"> <strong class="ng-binding">Lasso.py</strong> <small class="pull-right"> <span ng-class="{&#39;glyphicon-chevron-right&#39;: currentFileIndex !== $index, &#39;glyphicon-chevron-down&#39;: currentFileIndex === $index}" class="text-muted glyphicon glyphicon-chevron-right"> </span> </small> <!-- ngIf: file.comments_count > 0 --> </div> <!-- ngIf: currentFileIndex === $index --> </div><!-- end ngRepeat: file in files --></div><!-- end ngIf: files --> <div class="row row-gap-medium"></div> </section> <!-- ngIf: critiquesAccessor --><section ng-if="critiquesAccessor" ng-show="isCurrentTab(&#39;feedback&#39;)" class="ng-scope"> <!-- ngIf: hasFeedback && submission.result --><h2 ng-if="hasFeedback &amp;&amp; submission.result" class="result-label h-slim-top passed"> Meets Specifications </h2><!-- end ngIf: hasFeedback && submission.result --> <div critiques-editor="" critiques-accessor="critiquesAccessor" editable="false" class="ng-isolate-scope"><!-- ngRepeat: section in critiquesAccessor.getSections() --><div ng-repeat="section in critiquesAccessor.getSections()" class="ng-scope"> <div section-critiques="" section="section" critiques="critiquesAccessor.getCritiques(section.id)" editable="editable" failed-required-placeholder="failedRequiredPlaceholder" passed-required-placeholder="passedRequiredPlaceholder" optional-placeholder="optionalPlaceholder" commenter-label="commenterLabel" state="sectionCritiquesState[section.id]" class="ng-isolate-scope"><div class="panel"> <div class="col-xs-12 bg-gray"> <div class="row row-gap-medium"></div> <h2 class="h-slim-top expandable expandable-pull-right ng-binding expanded" ng-class="{expanded: isExpanded()}" ng-click="toggleExpansion()"> Code Functionality </h2> <!-- ngIf: isExpanded() --><div ng-if="isExpanded()" class="ng-scope"> <!-- ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Final project code functionality reflects the description in the project document.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --> </div><!-- end ngIf: isExpanded() --> <div class="row row-gap-medium"></div> </div> </div></div> <div class="row row-gap-large"></div> </div><!-- end ngRepeat: section in critiquesAccessor.getSections() --><div ng-repeat="section in critiquesAccessor.getSections()" class="ng-scope"> <div section-critiques="" section="section" critiques="critiquesAccessor.getCritiques(section.id)" editable="editable" failed-required-placeholder="failedRequiredPlaceholder" passed-required-placeholder="passedRequiredPlaceholder" optional-placeholder="optionalPlaceholder" commenter-label="commenterLabel" state="sectionCritiquesState[section.id]" class="ng-isolate-scope"><div class="panel"> <div class="col-xs-12 bg-gray"> <div class="row row-gap-medium"></div> <h2 class="h-slim-top expandable expandable-pull-right ng-binding expanded" ng-class="{expanded: isExpanded()}" ng-click="toggleExpansion()"> Code Readability </h2> <!-- ngIf: isExpanded() --><div ng-if="isExpanded()" class="ng-scope"> <!-- ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Final project code follows an intuitive, easy-to-follow logical structure.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Final project code that is not intuitively readable is well-documented with comments.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --> </div><!-- end ngIf: isExpanded() --> <div class="row row-gap-medium"></div> </div> </div></div> <div class="row row-gap-large"></div> </div><!-- end ngRepeat: section in critiquesAccessor.getSections() --><div ng-repeat="section in critiquesAccessor.getSections()" class="ng-scope"> <div section-critiques="" section="section" critiques="critiquesAccessor.getCritiques(section.id)" editable="editable" failed-required-placeholder="failedRequiredPlaceholder" passed-required-placeholder="passedRequiredPlaceholder" optional-placeholder="optionalPlaceholder" commenter-label="commenterLabel" state="sectionCritiquesState[section.id]" class="ng-isolate-scope"><div class="panel"> <div class="col-xs-12 bg-gray"> <div class="row row-gap-medium"></div> <h2 class="h-slim-top expandable expandable-pull-right ng-binding expanded" ng-class="{expanded: isExpanded()}" ng-click="toggleExpansion()"> Problems encountered in your map </h2> <!-- ngIf: isExpanded() --><div ng-if="isExpanded()" class="ng-scope"> <!-- ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Student response shows understanding of the process of auditing, and ways to correct or standardize the data, including dealing with problems specific to the location, e.g. related to language or traditional ways of formatting.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Some of the problems encountered during data audit are cleaned programmatically.  </p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --> </div><!-- end ngIf: isExpanded() --> <div class="row row-gap-medium"></div> </div> </div></div> <div class="row row-gap-large"></div> </div><!-- end ngRepeat: section in critiquesAccessor.getSections() --><div ng-repeat="section in critiquesAccessor.getSections()" class="ng-scope"> <div section-critiques="" section="section" critiques="critiquesAccessor.getCritiques(section.id)" editable="editable" failed-required-placeholder="failedRequiredPlaceholder" passed-required-placeholder="passedRequiredPlaceholder" optional-placeholder="optionalPlaceholder" commenter-label="commenterLabel" state="sectionCritiquesState[section.id]" class="ng-isolate-scope"><div class="panel"> <div class="col-xs-12 bg-gray"> <div class="row row-gap-medium"></div> <h2 class="h-slim-top expandable expandable-pull-right ng-binding expanded" ng-class="{expanded: isExpanded()}" ng-click="toggleExpansion()"> Overview of the data </h2> <!-- ngIf: isExpanded() --><div ng-if="isExpanded()" class="ng-scope"> <!-- ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>The dataset is at least 50 MB.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Student response provides a statistical overview of a dataset, like: </p>
+<ul>
+<li>size of the file</li>
+<li>number of unique users</li>
+<li>number of nodes and ways</li>
+<li>number of chosen type of nodes, like cafes, shops etc</li>
+</ul>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Student response also includes the MongoDB queries used to obtain the statistics.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --> </div><!-- end ngIf: isExpanded() --> <div class="row row-gap-medium"></div> </div> </div></div> <div class="row row-gap-large"></div> </div><!-- end ngRepeat: section in critiquesAccessor.getSections() --><div ng-repeat="section in critiquesAccessor.getSections()" class="ng-scope"> <div section-critiques="" section="section" critiques="critiquesAccessor.getCritiques(section.id)" editable="editable" failed-required-placeholder="failedRequiredPlaceholder" passed-required-placeholder="passedRequiredPlaceholder" optional-placeholder="optionalPlaceholder" commenter-label="commenterLabel" state="sectionCritiquesState[section.id]" class="ng-isolate-scope"><div class="panel"> <div class="col-xs-12 bg-gray"> <div class="row row-gap-medium"></div> <h2 class="h-slim-top expandable expandable-pull-right ng-binding expanded" ng-class="{expanded: isExpanded()}" ng-click="toggleExpansion()"> Other ideas about the datasets </h2> <!-- ngIf: isExpanded() --><div ng-if="isExpanded()" class="ng-scope"> <!-- ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Student proposes one or more additional ways of improving and analyzing the data and gives thoughtful discussion about the benefits and anticipated problems in implementing the improvement.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --><div ng-if="!!critique.observation" class="ng-scope"> <div class="row row-gap-small"></div> <strong class="ng-binding">Reviewer Comments</strong> <p class="p-slim ng-isolate-scope" marked="critique.observation"><p><a href="./Udacity Review 2_files/70d2d5c4962e0da9f27ec1856f7b0b1d.png" target="_blank"><img src="./Udacity Review 2_files/70d2d5c4962e0da9f27ec1856f7b0b1d.png" alt=""></a></p>
+<p>Outstanding consideration of the problems in implementations.  The revision completes the requirements of this criteria.  Congratulations on completing this difficult course.  You should be proud.  In our next course, we will be getting into one of my favorite languages for visualizations and general analytics - R programming language.  Good luck and I hope to review more of your future projects!</p>
+</p> </div><!-- end ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --> </div><!-- end ngIf: isExpanded() --> <div class="row row-gap-medium"></div> </div> </div></div> <div class="row row-gap-large"></div> </div><!-- end ngRepeat: section in critiquesAccessor.getSections() --><div ng-repeat="section in critiquesAccessor.getSections()" class="ng-scope"> <div section-critiques="" section="section" critiques="critiquesAccessor.getCritiques(section.id)" editable="editable" failed-required-placeholder="failedRequiredPlaceholder" passed-required-placeholder="passedRequiredPlaceholder" optional-placeholder="optionalPlaceholder" commenter-label="commenterLabel" state="sectionCritiquesState[section.id]" class="ng-isolate-scope"><div class="panel"> <div class="col-xs-12 bg-gray"> <div class="row row-gap-medium"></div> <h2 class="h-slim-top expandable expandable-pull-right ng-binding expanded" ng-class="{expanded: isExpanded()}" ng-click="toggleExpansion()"> Thoroughness and Succinctness of Submission </h2> <!-- ngIf: isExpanded() --><div ng-if="isExpanded()" class="ng-scope"> <!-- ngRepeat: critique in critiques --><div ng-repeat="critique in critiques" class="ng-scope"> <div class="col-xs-12 bg-white ng-isolate-scope" scroll-if="isCurrentEditingCritique(critique.id)"> <!-- ngIf: isEditingCritique(critique.id) --> <!-- ngIf: !isEditingCritique(critique.id) --><div critique-view="" critique="critique" editable="editable" edit-clicked="setEditingCritique(critique.id, true)" commenter-label="commenterLabel" ng-if="!isEditingCritique(critique.id)" class="ng-scope ng-isolate-scope"><div class="row row-gap-small"></div> <h4 class="h-slim ng-binding"> Specification </h4> <p marked="rubric.passed_description" class="ng-isolate-scope"><p>Student submission is long enough to thoroughly answer the questions asked without giving unnecessary detail. A good general guideline is that your question responses should take about 3-6 pages.</p>
+</p> <div class="pill pill-passed"> <span class="ng-binding">Meets Specification</span> </div> <!-- ngIf: !!critique.observation --> <!-- ngIf: rubric.exceedable --> <!-- ngIf: editable --> <div class="row row-gap-small"></div> </div><!-- end ngIf: !isEditingCritique(critique.id) --> </div> <div class="row row-gap-medium"></div> </div><!-- end ngRepeat: critique in critiques --> </div><!-- end ngIf: isExpanded() --> <div class="row row-gap-medium"></div> </div> </div></div> <div class="row row-gap-large"></div> </div><!-- end ngRepeat: section in critiquesAccessor.getSections() --> </div> </section><!-- end ngIf: critiquesAccessor --> <section ng-show="isCurrentTab(&#39;reviews&#39;)" class="ng-hide"> <div reviews-list="" reviews="pastReviews" this-review="submission" class="ng-isolate-scope"><table class="table borderless"> <thead> <tr><th>Reviews</th> <th>Reviewed</th> <th>Student Notes</th> </tr></thead> <tbody><!-- ngRepeat: review in reviews --><tr ng-repeat="review in reviews" class="ng-scope"> <td class="width-sm"> <!-- ngIf: !(thisReview && thisReview.id === review.id) --><a ng-if="!(thisReview &amp;&amp; thisReview.id === review.id)" ui-sref="reviews-show({submissionId: review.id})" target="_blank" class="ng-binding ng-scope" href="https://review.udacity.com/#!/reviews/43384"> Review #1 </a><!-- end ngIf: !(thisReview && thisReview.id === review.id) --> <!-- ngIf: thisReview && thisReview.id === review.id --> </td> <td class="width-sm"> <span am-time-ago="review.completed_at">19h ago</span> </td> <td> <div marked="review.notes || &#39;_None provided_&#39;" class="ng-isolate-scope"><p>Looking forward to hearing your feedback :D</p>
+</div> </td> </tr><!-- end ngRepeat: review in reviews --> </tbody></table></div> </section> <section ng-show="isCurrentTab(&#39;audit&#39;)" class="ng-hide"> <div audit-tab="" submission="submission" state="auditTabState" class="ng-isolate-scope"><!-- ngIf: auditCritiquesAccessor --> </div> </section> </div> </div> </div> <div ng-show="isCurrentTab(&#39;feedback&#39;) || isUngradeable()" class="ng-scope"> <!-- ngIf: !hasViewedResubmissionVideo() && isResubmittable() --> <!-- ngIf: hasViewedResubmissionVideo() && isSubmissionByCurrentUser() --><div ng-if="hasViewedResubmissionVideo() &amp;&amp; isSubmissionByCurrentUser()" class="row ng-scope"> <div class="col-md-8 col-md-offset-2"> <hr class="slim"> </div> </div><!-- end ngIf: hasViewedResubmissionVideo() && isSubmissionByCurrentUser() --> <div class="row section section-small"> <div class="col-md-8 col-md-offset-2"> <!-- ngIf: hasViewedResubmissionVideo() && isResubmittable() --> <!-- ngIf: isSubmissionByCurrentUser() --><p class="slim ng-scope" ng-if="isSubmissionByCurrentUser()"> <img src="./Udacity Review 2_files/support-icon.svg" class="img-initial icon"> Have a question about your review? Email us at <a href="mailto:review-support@udacity.com">review-support@udacity.com</a> and include the link to this review. </p><!-- end ngIf: isSubmissionByCurrentUser() --> </div> </div> </div>  <!-- ngIf: shouldShowAssessmentFooter() --><div ng-if="shouldShowAssessmentFooter()" class="assessment-footer-gap ng-scope"></div><!-- end ngIf: shouldShowAssessmentFooter() --> <!-- ngIf: shouldShowAssessmentFooter() --><footer sticky-footer="" ng-if="shouldShowAssessmentFooter()" class="assessment-footer row ng-scope sticky-footer"> <hr class="hr-slim"> <div class="col-xs-12 col-md-8 col-md-offset-2"> <span> <div ng-show="!isUngradeable() &amp;&amp; showStudentFeedback"> <span> How satisfied are you with this feedback? <span ng-mouseleave="reset()" ng-keydown="onKeydown($event)" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" rating="" ng-model="studentFeedback.rating" class="ng-isolate-scope ng-valid">
+    <!-- ngRepeat: r in range track by $index --><i ng-repeat="r in range track by $index" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" class="glyphicon ng-scope glyphicon-star-empty" ng-class="$index &lt; value &amp;&amp; (r.stateOn || &#39;glyphicon-star&#39;) || (r.stateOff || &#39;glyphicon-star-empty&#39;)" ng-attr-title="{{r.title}}" title="one">
+        <span class="sr-only ng-binding">( )</span>
+    </i><!-- end ngRepeat: r in range track by $index --><i ng-repeat="r in range track by $index" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" class="glyphicon ng-scope glyphicon-star-empty" ng-class="$index &lt; value &amp;&amp; (r.stateOn || &#39;glyphicon-star&#39;) || (r.stateOff || &#39;glyphicon-star-empty&#39;)" ng-attr-title="{{r.title}}" title="two">
+        <span class="sr-only ng-binding">( )</span>
+    </i><!-- end ngRepeat: r in range track by $index --><i ng-repeat="r in range track by $index" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" class="glyphicon ng-scope glyphicon-star-empty" ng-class="$index &lt; value &amp;&amp; (r.stateOn || &#39;glyphicon-star&#39;) || (r.stateOff || &#39;glyphicon-star-empty&#39;)" ng-attr-title="{{r.title}}" title="three">
+        <span class="sr-only ng-binding">( )</span>
+    </i><!-- end ngRepeat: r in range track by $index --><i ng-repeat="r in range track by $index" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" class="glyphicon ng-scope glyphicon-star-empty" ng-class="$index &lt; value &amp;&amp; (r.stateOn || &#39;glyphicon-star&#39;) || (r.stateOff || &#39;glyphicon-star-empty&#39;)" ng-attr-title="{{r.title}}" title="four">
+        <span class="sr-only ng-binding">( )</span>
+    </i><!-- end ngRepeat: r in range track by $index --><i ng-repeat="r in range track by $index" ng-mouseenter="enter($index + 1)" ng-click="rate($index + 1)" class="glyphicon ng-scope glyphicon-star-empty" ng-class="$index &lt; value &amp;&amp; (r.stateOn || &#39;glyphicon-star&#39;) || (r.stateOff || &#39;glyphicon-star-empty&#39;)" ng-attr-title="{{r.title}}" title="five">
+        <span class="sr-only ng-binding">( )</span>
+    </i><!-- end ngRepeat: r in range track by $index -->
+</span> </span> </div> </span> <div class="pull-right"> <!-- ngIf: isResubmittable() --> </div> </div> </footer><!-- end ngIf: shouldShowAssessmentFooter() --> <div id="comment-wrapper" class="ng-scope"></div> </div>
+      </div> </div> </div>
+    </div>
+
+    <div id="footer">
+      <div class="section section-standout section-slim">
+        <div class="container">
+          <div class="row row-gap-huge hidden-xs"></div>
+          <!-- NON-RESPONSIVE FOOTER -->
+          <div class="row hidden-xs hidden-sm">
+            <div class="col-xs-3 col-xs-offset-2">
+
+              <h4>Information</h4>
+
+              <p class="caption">
+                <a href="http://udacity.com/nanodegree">Nanodegree Credentials</a>
+                <br>
+                <a href="http://udacity.com/organizations">Udacity for Organizations</a>
+                <br>
+                <a href="http://udacity.com/faq">Help and FAQ</a>
+                <br>
+                <a href="http://udacity.com/feedback/signup">Feedback Program</a>
+              </p>
+
+            </div>
+            <div class="col-xs-2">
+
+              <h4>Community</h4>
+
+              <p class="caption">
+                <a href="http://blog.udacity.com/">Blog</a>
+                <br>
+                <a href="http://udacity.com/press">News &amp; Media</a>
+                <br>
+                <a href="http://udacity.com/catalog-api">Developer API</a>
+              </p>
+
+            </div>
+            <div class="col-xs-2">
+
+              <h4>Udacity</h4>
+
+              <p class="caption">
+                <a href="http://udacity.com/us">About</a>
+                <br>
+                <a href="http://udacity.com/jobs">Jobs</a>
+                <br>
+                <a href="http://udacity.com/contact">Contact Us</a>
+                <br>
+                <a href="http://udacity.com/legal/tos">Legal</a>
+              </p>
+
+            </div>
+            <div class="col-xs-3">
+
+              <h4>Follow us on</h4>
+              <a href="https://www.facebook.com/Udacity"><span class="sprite sprite-social sprite-facebook"></span></a>
+              <a href="https://twitter.com/udacity"><span class="sprite sprite-social sprite-twitter"></span></a>
+              <a href="https://plus.google.com/+Udacity/posts"><span class="sprite sprite-social sprite-gplus"></span></a>
+              <a href="https://www.linkedin.com/company/udacity"><span class="sprite sprite-social sprite-linkedin"></span></a>
+
+
+              <h4>Mobile Apps</h4>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="text-center-xs">
+                    <a href="https://itunes.apple.com/us/app/id819700933?mt=8">
+                      <img alt="Apple store" class="img-initial mobile-button" src="./Udacity Review 2_files/5mY-J8xINNmZ4x_6mbNYmhDWFT_qzG4q4QA2jPzRfiqRjUticf5u0eEEATtX04gbr_KrDSx8SDDBpGRHAWU=s150" srcset="//lh6.ggpht.com/5mY-J8xINNmZ4x_6mbNYmhDWFT_qzG4q4QA2jPzRfiqRjUticf5u0eEEATtX04gbr_KrDSx8SDDBpGRHAWU=s300#w=300&amp;h=88 2x">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.udacity.android">
+                      <img alt="Google Play" class="mobile-button" src="./Udacity Review 2_files/Zb2s5Ho_mzDPnb9dBDIqQPpwFrxz1e902ksTnir8Cs_KdrYLvN_TLVK1pmKGbMPgolJ2wIlY23yI9OODDss=s150" srcset="//lh5.ggpht.com/Zb2s5Ho_mzDPnb9dBDIqQPpwFrxz1e902ksTnir8Cs_KdrYLvN_TLVK1pmKGbMPgolJ2wIlY23yI9OODDss=s300#w=300&amp;h=88 2x">
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row row-gap-small">
+                <div class="col-xs-12 text-muted">Nanodegree is a trademark of Udacity <br>© 2011-2015 Udacity, Inc.</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- RESPONSIVE FOOTER -->
+          <div class="row visible-xs visible-sm text-center-xs">
+            <div class="col-sm-4 col-xs-12">
+
+              <h4>Information</h4>
+
+              <p class="caption">
+                <a href="http://udacity.com/nanodegree">Nanodegree Credentials</a>
+                <br>
+                <a href="http://udacity.com/organizations">Udacity for Organizations</a>
+                <br>
+                <a href="http://udacity.com/faq">Help and FAQ</a>
+                <br>
+                <a href="http://udacity.com/feedback/signup">Feedback Program</a>
+              </p>
+
+            </div>
+            <div class="col-sm-4 col-xs-12">
+
+              <h4>Community</h4>
+
+              <p class="caption">
+                <a href="http://blog.udacity.com/">Blog</a>
+                <br>
+                <a href="http://udacity.com/press">News &amp; Media</a>
+                <br>
+                <a href="http://udacity.com/catalog-api">Developer API</a>
+              </p>
+
+            </div>
+            <div class="col-sm-4 col-xs-12">
+
+              <h4>Udacity</h4>
+
+              <p class="caption">
+                <a href="http://udacity.com/us">About</a>
+                <br>
+                <a href="http://udacity.com/jobs">Jobs</a>
+                <br>
+                <a href="http://udacity.com/contact">Contact Us</a>
+                <br>
+                <a href="http://udacity.com/legal/tos">Legal</a>
+              </p>
+
+            </div>
+            <div class="col-sm-12 col-xs-12">
+
+              <h4>Follow us on</h4>
+              <a href="https://www.facebook.com/Udacity"><span class="sprite sprite-social sprite-facebook"></span></a>
+              <a href="https://twitter.com/udacity"><span class="sprite sprite-social sprite-twitter"></span></a>
+              <a href="https://plus.google.com/+Udacity/posts"><span class="sprite sprite-social sprite-gplus"></span></a>
+              <a href="https://www.linkedin.com/company/udacity"><span class="sprite sprite-social sprite-linkedin"></span></a>
+
+
+              <h4>Mobile Apps</h4>
+
+              <div class="row">
+                <div class="col-xs-7">
+                  <div class="text-center-xs">
+                    <a href="https://itunes.apple.com/us/app/id819700933?mt=8">
+                      <img alt="Apple store" class="img-initial mobile-button" src="./Udacity Review 2_files/5mY-J8xINNmZ4x_6mbNYmhDWFT_qzG4q4QA2jPzRfiqRjUticf5u0eEEATtX04gbr_KrDSx8SDDBpGRHAWU=s150" srcset="//lh6.ggpht.com/5mY-J8xINNmZ4x_6mbNYmhDWFT_qzG4q4QA2jPzRfiqRjUticf5u0eEEATtX04gbr_KrDSx8SDDBpGRHAWU=s300#w=300&amp;h=88 2x">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.udacity.android">
+                      <img alt="Google Play" class="mobile-button" src="./Udacity Review 2_files/Zb2s5Ho_mzDPnb9dBDIqQPpwFrxz1e902ksTnir8Cs_KdrYLvN_TLVK1pmKGbMPgolJ2wIlY23yI9OODDss=s150" srcset="//lh5.ggpht.com/Zb2s5Ho_mzDPnb9dBDIqQPpwFrxz1e902ksTnir8Cs_KdrYLvN_TLVK1pmKGbMPgolJ2wIlY23yI9OODDss=s300#w=300&amp;h=88 2x">
+                    </a>
+                  </div>
+                </div>
+                <div class="col-xs-5 text-muted">
+                  Nanodegree is a trademark of Udacity <br>© 2011-2015 Udacity, Inc.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row row-gap-huge hidden-xs"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./Udacity Review 2_files/airbrake.min.js" async=""></script><script src="./Udacity Review 2_files/airbrake.min.js" async=""></script><script async="" src="./Udacity Review 2_files/p.js"></script><script src="./Udacity Review 2_files/jquery.min.js"></script>
+
+    <script type="text/javascript" src="./Udacity Review 2_files/airbrake-shim.js" data-airbrake-project-id="108424" data-airbrake-project-key="585b2c42b7a3ccfb360e6b1461185702" data-airbrake-environment-name="production"></script>
+    <script data-airbrake-onload="initAirbrake">
+      function initAirbrake() {
+        Airbrake.addFilter(function (notice) {
+          console.log(notice);
+          return true;
+        });
+      }
+    </script>
+    <script src="./Udacity Review 2_files/angular.min.js"></script>
+
+    <!-- inject:js -->
+    <script src="./Udacity Review 2_files/grading_29ae6e36.js"></script>
+    <script src="./Udacity Review 2_files/airbrake-shim.js"></script>
+    <!-- endinject -->
+  
+
+</body></html>
